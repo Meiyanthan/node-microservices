@@ -4,10 +4,10 @@ on:
   push:
     branches: [ main ]
 
-#env:
-#  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
-#  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-#  NODE_VERSION: '10.x'                # set this to the node version to use
+env:
+  AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '13.x'                # set this to the node version to use
 
 jobs:
   build:
@@ -24,10 +24,8 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
-      run: |
-        # Build and test the project...
-        npm install
-        npm run build --if-present
-        npm run test
+        node-version: ${{ env.NODE_VERSION }}
+    - name: Install Dependencies
+      run: npm ci
+     -run: npm run build --if-present
+     -run: npm run test
