@@ -1,5 +1,5 @@
 name: "NodeJS MicroService"
-true: 
+on: 
   push: 
     branches: 
       - main
