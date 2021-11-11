@@ -4,8 +4,6 @@ on:
     branches: 
       - main
 env: 
-  AZURE_WEBAPP_NAME: "AZURE Devops"
-  AZURE_WEBAPP_PACKAGE_PATH: "."
   NODE_VERSION: 13.x
 jobs: 
   build: 
