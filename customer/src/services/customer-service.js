@@ -99,9 +99,55 @@ class CustomerService {
         }
     }
 
+    async ManageWishlist(customerId, product) {
+        try {
+            const wishlistRes = await this.repository.AddWishlistItems(customerId, product);
+            return FormatData(wishlistRes); 
+        
+        } catch (err) {
+            throw new APIError('Data not found - ManageWishlist',err);
+        }
+    }
+
+    async ManageCart(customerId, product, qty, isRemove) {
+        try{
+            const cartRes =  await this.repository.AddToCartItems(customerId, product, qty, isRemove);
+            return FormatData(cartRes);
+        
+        } catch(err) {
+            throw new APIError('Data not found - ManageCart',err);
+        }
+    }
+
+    async ManageOrder(customerId, order) {
+        try {
+            const orderRes = await this.repository.AddOrderToProfile(customerId, order);
+            return FormatData(orderRes);
+
+        } catch(err) {
+            throw new APIError('Data not found - ManageOrder',err);
+        }
+    }
 
     async SubscribeEvents (payload) {
-        
+
+        const { event, data } = payload;
+        const { userId, product, order, qty } = data;
+
+        switch(event){
+            case 'ADD_TO_WISHLIST':
+            case 'REMOVE_WISHLIST':
+                this.ManageWishlist(userId, product);
+                break;
+            case 'ADD_TO_CART':
+                this.ManageCart(userId, product, qty, false);
+            case 'REMOVE_FROM_CART':
+                this.ManageCart(userId, product, qty, false);
+            case 'CREATE_ORDER':
+                this.ManageOrder(userId, order);
+            default:
+                break;
+        }
     }
 }
 

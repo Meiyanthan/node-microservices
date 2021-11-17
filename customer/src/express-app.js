@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { customer } = require('./api');
+const { customer, appEvents } = require('./api');
 const HandleErrors = require('./utils/error-handler');
 
 module.exports = (app) => {
@@ -9,6 +9,9 @@ module.exports = (app) => {
     app.use(cors());
     app.use(express.static(__dirname+'/public'));
 
+    //Listen to events
+    appEvents(app);
+    
     //api
     customer(app);
 
